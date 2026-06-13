@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#fff7ec">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="TOEIC Trail">
+    <meta name="description" content="個人用多益 300 到 900 衝刺 App，含刷題、模考、錯題本、文法路線、字庫與落點分析。">
+    <title>TOEIC Trail</title>
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="apple-touch-icon" href="assets/icon-192.png">
+    <link rel="icon" href="assets/icon-192.png">
+    <link rel="stylesheet" href="styles.css?v=mobile-suite1">
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="rail" aria-label="主要導覽">
+        <div class="brand">
+          <span class="brand-mark">T</span>
+          <span>TOEIC Trail</span>
+        </div>
+        <nav class="nav-list">
+          <button class="nav-item active" data-view="drill" type="button" title="刷題">
+            <span class="nav-icon">▣</span>
+            <span>刷題</span>
+          </button>
+          <button class="nav-item" data-view="mock" type="button" title="模擬考">
+            <span class="nav-icon">◴</span>
+            <span>模擬考</span>
+          </button>
+          <button class="nav-item" data-view="mistakes" type="button" title="錯題本">
+            <span class="nav-icon">▤</span>
+            <span>錯題本</span>
+          </button>
+          <button class="nav-item" data-view="grammar" type="button" title="文法">
+            <span class="nav-icon">▯</span>
+            <span>文法</span>
+          </button>
+          <button class="nav-item" data-view="more" type="button" title="更多">
+            <span class="nav-icon">•••</span>
+            <span>更多</span>
+          </button>
+        </nav>
+      </aside>
+
+      <main class="main-area">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">TOEIC 300 → 900</p>
+            <h1 id="screenTitle">刷題</h1>
+          </div>
+          <div class="stats" aria-label="學習狀態">
+            <div class="stat-pill"><span>●</span><strong id="xpValue">0</strong></div>
+            <div class="stat-pill"><span>🔥</span><strong id="streakValue">1天</strong></div>
+            <div class="stat-pill"><span>◎</span><strong id="heartValue">5</strong></div>
+          </div>
+        </header>
+
+        <section class="install-card" id="installCard" hidden>
+          <div>
+            <strong>加到手機主畫面</strong>
+            <p>安裝成 PWA 後就能像 App 一樣打開，學習進度會存在這台手機。</p>
+          </div>
+          <button class="primary-button" id="installButton" type="button">安裝</button>
+        </section>
+
+        <section class="content-view active" id="drillView">
+          <section class="drill-hero">
+            <div class="mascot-stage">
+              <div class="speech-bubble">歡迎回來，今天要把弱點吃掉一點點。</div>
+              <img src="assets/mascot.png" alt="TOEIC Trail 吉祥物" class="hero-mascot">
+            </div>
+            <div class="drill-card">
+              <div class="mode-tabs" aria-label="題型模式">
+                <button class="active" data-start-mode="speed" type="button">隨機</button>
+                <button data-start-mode="custom" type="button">自選</button>
+                <button data-start-mode="personalized" type="button">個人化</button>
+              </div>
+              <p id="dailyPrompt">從題庫中隨機選題，測試自己的綜合能力。</p>
+              <div class="timer-box" id="dailyTimer">00:13:21</div>
+              <div class="quick-grid">
+                <article class="mode-card compact" data-start-mode="foundation">
+                  <span class="mode-icon">300</span>
+                  <h2>基礎補強</h2>
+                  <p>先補常用字、基本句型與短題。</p>
+                </article>
+                <article class="mode-card compact" data-start-mode="listening-core">
+                  <span class="mode-icon">L</span>
+                  <h2>聽力精聽</h2>
+                  <p>播放、慢速、跟讀一次完成。</p>
+                </article>
+                <article class="mode-card compact" data-start-mode="reading-core">
+                  <span class="mode-icon">R</span>
+                  <h2>閱讀掃描</h2>
+                  <p>練公告、郵件、備忘錄定位。</p>
+                </article>
+              </div>
+            </div>
+          </section>
+
+          <section class="lesson-path card-panel" aria-label="課程地圖">
+            <div class="unit-header">
+              <div>
+                <p class="eyebrow">Daily Path</p>
+                <h2>今天至少完成 30 題</h2>
+              </div>
+              <button class="ghost-button" id="resetButton" type="button">重置進度</button>
+            </div>
+            <div class="lesson-map" id="lessonMap"></div>
+            <div class="progress-block">
+              <div class="progress-row">
+                <span>衝刺路線進度</span>
+                <strong id="unitPercent">0%</strong>
+              </div>
+              <div class="progress-track"><span id="unitBar"></span></div>
+            </div>
+          </section>
+
+          <section class="plan-strip" id="planStrip" aria-label="今日計畫"></section>
+        </section>
+
+        <section class="content-view" id="mockView">
+          <section class="mock-hero">
+            <div class="speech-bubble">我是考官，我來考考你。</div>
+            <img src="assets/mascot.png" alt="模考教練" class="mock-mascot">
+          </section>
+          <div class="mock-grid" id="mockGrid"></div>
+        </section>
+
+        <section class="content-view" id="mistakesView">
+          <div class="page-tools">
+            <h2>錯題本</h2>
+            <input class="search-input" id="mistakeSearch" type="search" placeholder="Search">
+            <div class="chip-row" id="mistakeFilters" aria-label="錯題篩選">
+              <button class="active" data-mistake-filter="all" type="button">全部</button>
+              <button data-mistake-filter="Part 1" type="button">Part 1</button>
+              <button data-mistake-filter="Part 2" type="button">Part 2</button>
+              <button data-mistake-filter="Part 3" type="button">Part 3</button>
+              <button data-mistake-filter="Part 4" type="button">Part 4</button>
+              <button data-mistake-filter="Part 5" type="button">Part 5</button>
+              <button data-mistake-filter="Part 6" type="button">Part 6</button>
+              <button data-mistake-filter="Part 7" type="button">Part 7</button>
+            </div>
+            <div class="check-row">
+              <label><input id="mistakeNewest" type="checkbox" checked> 由新到舊</label>
+              <label><input id="mistakeOnlyWrong" type="checkbox" checked> 只看錯題</label>
+              <label><input id="mistakeOnlyFav" type="checkbox"> 只看收藏</label>
+            </div>
+          </div>
+          <div class="mistake-list" id="mistakeList"></div>
+          <button class="floating-review" id="reviewMistakesButton" type="button">複習以上題目</button>
+        </section>
+
+        <section class="content-view" id="grammarView">
+          <section class="grammar-hero">
+            <img src="assets/mascot.png" alt="文法老師" class="grammar-mascot">
+            <div class="speech-bubble">每堂課 5 題全對才算合格，文法慢慢補起來。</div>
+          </section>
+          <div class="grammar-panel">
+            <div class="unit-header">
+              <div>
+                <p class="eyebrow">Grammar Roadmap</p>
+                <h2>多益必考文法</h2>
+              </div>
+              <strong id="grammarPercent">0%</strong>
+            </div>
+            <div class="grammar-path" id="grammarPath"></div>
+          </div>
+        </section>
+
+        <section class="content-view" id="moreView">
+          <section class="profile-card">
+            <img src="assets/mascot.png" alt="個人頭像" class="avatar">
+            <div>
+              <h2>中玄 吳</h2>
+              <p>免費個人版 · 本機記憶</p>
+            </div>
+          </section>
+
+          <section class="analysis-card wide">
+            <div class="unit-header">
+              <div>
+                <h2>落點分析</h2>
+                <p>再完成 <strong id="analysisUnlockCount">4</strong> 回練習解鎖更完整分析。</p>
+              </div>
+            </div>
+            <div class="score-ring">
+              <span id="scoreRingText">資訊不足</span>
+            </div>
+            <div class="target-form">
+              <label>填寫目標分數 <input id="targetScoreInput" type="number" min="300" max="990" step="5" placeholder="900"></label>
+              <label>填寫考試日期 <input id="examDateInput" type="date"></label>
+              <button class="primary-button" id="saveProfileButton" type="button">儲存目標</button>
+            </div>
+          </section>
+
+          <section class="analytics-panel" id="analyticsPanel"></section>
+          <section class="study-plan" id="studyPlan"></section>
+          <section class="roadmap-panel">
+            <div class="unit-header">
+              <div>
+                <p class="eyebrow">300 → 900</p>
+                <h2>分數成長路線</h2>
+              </div>
+            </div>
+            <div class="roadmap-grid" id="roadmapGrid"></div>
+          </section>
+          <section class="book-mode">
+            <div class="unit-header">
+              <div>
+                <p class="eyebrow">Original Content</p>
+                <h2>完整練習庫</h2>
+              </div>
+            </div>
+            <div class="book-grid" id="bookGrid"></div>
+          </section>
+          <section class="word-section">
+            <div class="word-toolbar">
+              <h2>多益 5000+ 字庫</h2>
+              <input class="word-search" id="wordSearch" type="search" placeholder="搜尋單字或中文">
+              <div class="segmented" role="tablist" aria-label="單字分類">
+                <button class="active" data-filter="all" type="button">全部</button>
+                <button data-filter="foundation" type="button">基礎</button>
+                <button data-filter="business" type="button">商務</button>
+                <button data-filter="office" type="button">職場</button>
+                <button data-filter="travel" type="button">旅遊</button>
+                <button data-filter="finance" type="button">財務</button>
+                <button data-filter="hr" type="button">人資</button>
+                <button data-filter="logistics" type="button">物流</button>
+              </div>
+            </div>
+            <p class="word-count" id="wordCount"></p>
+            <div class="word-list" id="wordList"></div>
+          </section>
+          <section class="achievement-layout">
+            <section class="achievement-summary">
+              <p class="eyebrow">Score Card</p>
+              <h2>你的多益儀表板</h2>
+              <p>資料只存在這台手機/瀏覽器，不會上傳。</p>
+              <div class="level-box">
+                <span>Band</span>
+                <strong id="levelValue">1</strong>
+              </div>
+            </section>
+            <section class="badges" id="badges"></section>
+          </section>
+          <section class="import-panel" aria-label="私人教材匯入">
+            <div>
+              <p class="eyebrow">Private Import</p>
+              <h2>匯入你自己整理的合法內容</h2>
+              <p>支援 CSV 字卡與題目，僅儲存在本機瀏覽器。</p>
+            </div>
+            <div class="import-actions">
+              <label class="file-button" for="privateImportFile">匯入 CSV</label>
+              <input id="privateImportFile" type="file" accept=".csv,text/csv">
+              <button class="ghost-button" id="clearPrivateContent" type="button">清除匯入內容</button>
+            </div>
+            <p class="word-count" id="importStatus"></p>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <div class="lesson-modal" id="lessonModal" aria-hidden="true">
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="lessonTitle">
+        <header class="modal-header">
+          <div>
+            <p class="eyebrow" id="questionMeta">Question</p>
+            <h2 id="lessonTitle">練習</h2>
+          </div>
+          <button class="icon-button" id="closeLesson" type="button" aria-label="關閉">×</button>
+        </header>
+        <div class="question-panel">
+          <div class="prompt-card">
+            <span class="prompt-type" id="promptType">Part 5</span>
+            <p id="questionPrompt">Question</p>
+            <div class="prompt-actions" id="promptActions"></div>
+          </div>
+          <div class="answer-area" id="answerArea"></div>
+        </div>
+        <footer class="feedback-bar" id="feedbackBar">
+          <p id="feedbackText">選擇或輸入答案後檢查。</p>
+          <button class="primary-button" id="checkButton" type="button">檢查</button>
+        </footer>
+      </div>
+    </div>
+
+    <script src="app.js?v=mobile-suite1"></script>
+  </body>
+</html>

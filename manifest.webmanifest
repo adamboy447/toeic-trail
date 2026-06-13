@@ -1,0 +1,25 @@
+{
+  "name": "TOEIC Trail",
+  "short_name": "TOEIC Trail",
+  "description": "個人用多益 300 到 900 衝刺 App，含刷題、模考、錯題本、文法路線、字庫與落點分析。",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#fff6ea",
+  "theme_color": "#ff6a00",
+  "icons": [
+    {
+      "src": "assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
